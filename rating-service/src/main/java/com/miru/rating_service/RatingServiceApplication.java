@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.base.Predicate;
+import com.miru.model.RatingDTO;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.ApiInfo;
@@ -53,17 +54,17 @@ public class RatingServiceApplication {
 		new SpringApplication(RatingServiceApplication.class).run(args);
 	}
 
-	private List<Rating> ratingList = Arrays.asList(new Rating(1L, 1L, 2), new Rating(2L, 1L, 3), new Rating(3L, 2L, 4),
-			new Rating(4L, 2L, 5));
+	private List<RatingDTO> ratingList = Arrays.asList(new RatingDTO(1L, 1L, 2), new RatingDTO(2L, 1L, 3), new RatingDTO(3L, 2L, 4),
+			new RatingDTO(4L, 2L, 5));
 
 	@GetMapping("")
-	public List<Rating> findRatingsByBookId(@RequestParam Long bookId) {
+	public List<RatingDTO> findRatingsByBookId(@RequestParam Long bookId) {
 		return bookId == null || bookId.equals(0L) ? Collections.EMPTY_LIST
 				: ratingList.stream().filter(r -> r.getBookId().equals(bookId)).collect(Collectors.toList());
 	}
 
 	@GetMapping("/all")
-	public List<Rating> findAllRatings() {
+	public List<RatingDTO> findAllRatings() {
 		return ratingList;
 	}
 }

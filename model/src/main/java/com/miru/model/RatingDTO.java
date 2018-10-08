@@ -1,12 +1,16 @@
-package com.miru.rating_service;
+package com.miru.model;
 
-public class Rating {
+public class RatingDTO {
 
 	private Long id;
 	private Long bookId;
 	private int stars;
 
-	public Rating(Long id, Long bookId, int stars) {
+	public RatingDTO() {
+
+	}
+
+	public RatingDTO(Long id, Long bookId, int stars) {
 		super();
 		this.id = id;
 		this.bookId = bookId;

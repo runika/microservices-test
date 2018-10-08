@@ -6,16 +6,22 @@ import static springfox.documentation.builders.PathSelectors.regex;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.base.Predicate;
+import com.miru.book_service.clients.RatingClient;
+import com.miru.model.RatingDTO;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.ApiInfo;
@@ -27,8 +33,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableEurekaClient
 @RestController
 @EnableSwagger2
+@EnableFeignClients
 @RequestMapping("/books")
 public class BookServiceApplication {
+	
+	@Autowired
+	private RatingClient ratingClient;
+	
     public static void main(String[] args) {
     	new SpringApplication(BookServiceApplication.class).run(args);
     }
@@ -62,5 +73,11 @@ public class BookServiceApplication {
     @GetMapping("/{bookId}")
     public Book findBook(@PathVariable Long bookId) {
         return bookList.stream().filter(b -> b.getId().equals(bookId)).findFirst().orElse(null);
+    }
+    
+    @GetMapping("/rating/{bookId}")
+    public List<RatingDTO> getBookRating(@PathVariable Long bookId) {
+
+        return ratingClient.findRatingsByBookId(bookId);
     }
 }

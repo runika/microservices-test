@@ -5,6 +5,10 @@ public class Book {
 	private String author;
 	private String title;
 
+	public Book() {
+		
+	}
+	
 	public Book(Long id, String author, String title) {
 		super();
 		this.id = id;
